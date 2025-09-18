@@ -28,3 +28,12 @@ class Database:
         cursor.execute(sql, category)
         all_categories = cursor.fetchall()
         return all_categories
+
+    def add_category(self, category):
+        conn = mysql.connector.connect(**self.config)
+        cursor = conn.cursor()
+        sql = "INSERT INTO categories (category_name) VALUES (%s)"
+        cursor.execute(sql, category)
+        conn.commit()
+        cursor.close()
+        conn.close()
