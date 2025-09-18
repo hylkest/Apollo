@@ -9,9 +9,11 @@ class Database:
         cursor = conn.cursor()
         sql = "INSERT IGNORE INTO links (url, category) VALUES (%s, %s)"
         cursor.execute(sql, (url, category))
+        link_id = cursor.lastrowid
         conn.commit()
         cursor.close()
         conn.close()
+        return link_id
 
     def get_all_categories(self):
         conn = mysql.connector.connect(**self.config)
@@ -34,6 +36,15 @@ class Database:
         cursor = conn.cursor()
         sql = "INSERT INTO categories (category_name) VALUES (%s)"
         cursor.execute(sql, category)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+    def save_url_title(self, url_id, title):
+        conn = mysql.connector.connect(**self.config)
+        cursor = conn.cursor()
+        sql = "INSERT INTO url_title (url_id, url_title) VALUES (%s, %s)"
+        cursor.execute(sql, (url_id, title))
         conn.commit()
         cursor.close()
         conn.close()
