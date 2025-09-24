@@ -48,7 +48,6 @@ class Scraper:
         soup = BeautifulSoup(res.content, "html.parser")
         self.logger.log(f"Succesfully scraped HTML of {self.start_url}")
 
-        # Extract title of the main page
         main_title = str(soup.title.string) if soup.title else "No Title"
         self.logger.log(f"Page title: {main_title}")
 
@@ -58,7 +57,6 @@ class Scraper:
         unique_links = {a["href"] for a in soup.find_all("a", href=True)}
         self.logger.log(f"Found {len(unique_links)} unique links")
 
-        # Store main page URL and title
         main_url_id = self.db.add_link_with_category(self.start_url, main_category)
         if main_url_id:
             self.db.save_url_title(main_url_id, main_title)
@@ -72,7 +70,6 @@ class Scraper:
                 category = main_category
                 title = "Internal Link - No Title"
 
-            # Save the link and its title
             link_id = self.db.add_link_with_category(abs_link, category)
             if link_id and title:
                 self.db.save_url_title(link_id, title)

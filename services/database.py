@@ -48,3 +48,12 @@ class Database:
         conn.commit()
         cursor.close()
         conn.close()
+
+    def save_email(self, email, category):
+        conn = mysql.connector.connect(**self.config)
+        cursor = conn.cursor()
+        sql = f"INSERT INTO url_email_address (email_address, category) VALUES ({email}, {category})"
+        cursor.execute(sql)
+        conn.commit()
+        cursor.close()
+        conn.close()
