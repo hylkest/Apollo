@@ -1,15 +1,13 @@
 name: scraper
-version: 1.0.1
 
 #
 # SETTINGS
 #
 
-# LOG LEVELS: 1: [INFO] 2: [DEBUG] 3: [ERROR]
-log_level: 1
-
-timeout: 1
-script_detector: true
+log_level: 1                                  # LOG LEVELS: 1: [INFO] 2: [DEBUG] 3: [ERROR]
+timeout: 1                                    # Timeout how long the scraper should wait before doing a new request
+script_detector: true                         # Enable or disable the script_detector for the scraper
+no_title_text: "Internal link - No title"     # What title do internal links get in the database
 
 
 
