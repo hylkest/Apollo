@@ -8,6 +8,6 @@ db_config = {
 }
 
 if __name__ == "__main__":
-    url = "https://interfaca.nl/"
+    url = "https://facebook.com/"
     scraper = Scraper(url, db_config)
     scraper.scrape()
