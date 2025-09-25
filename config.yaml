@@ -1,0 +1,17 @@
+name: scraper
+version: 1.0.1
+
+#
+# SETTINGS
+#
+
+# LOG LEVELS: 1: [INFO] 2: [DEBUG] 3: [ERROR]
+log_level: 1
+
+timeout: 1
+script_detector: true
+
+
+
+
+
