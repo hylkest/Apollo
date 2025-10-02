@@ -14,8 +14,8 @@ class Logger:
         self.log_dir = log_dir
         os.makedirs(self.log_dir, exist_ok=True)
 
-    def log(self, message, log_level=1):
-        level_str = self.log_level.get(log_level, "[INFO]")
+    def log(self, message, log_level=3):
+        level_str = self.log_level.get(log_level, "[ERROR]")
         line = f"{level_str} {message}"
         print(line)
         path = os.path.join(self.log_dir, self.filename)
