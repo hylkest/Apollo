@@ -41,8 +41,12 @@ class Scraper:
     def scrape(self):
         res = requests.get(self.start_url)
         if res.status_code != 200:
-            self.logger.log(f"Error code: {res.status_code}", log_level=3)
-            return
+            # self.logger.log(f"Error code: {res.status_code}", log_level=3)
+            # return
+            if res.status_code == 404:
+                self.logger.log(f"Error 404: {res.status_code}", log_level=3)
+            elif res.status_code == 500:
+                self.logger.log(f"Error 500: {res.status_code}", log_level=3)
 
         self.logger.log(f"Request successful (Status Code {res.status_code})")
         soup = BeautifulSoup(res.content, "html.parser")

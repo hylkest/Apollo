@@ -8,3 +8,9 @@
 
 ### config.yaml
 In the config.yaml you can edit some settings for the scraper
+
+
+### Log levels
+- 1 = INFO
+- 2 = DEBUG
+- 3 = ERROR
