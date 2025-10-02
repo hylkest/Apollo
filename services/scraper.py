@@ -105,6 +105,7 @@ class Scraper:
                 
                 # Emails opslaan voor externe links
                 for email in emails:
+                    email = email.lower()
                     self.db.save_email(email, category)
                     self.logger.log(f"Saved email: {email} with category: {category}")
                 

@@ -8,6 +8,6 @@ db_config = {
 }
 
 if __name__ == "__main__":
-    url = "https://sterc.com/"
+    url = "https://google.nl/"
     scraper = Scraper(url, db_config)
     scraper.scrape()
