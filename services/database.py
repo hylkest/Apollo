@@ -6,10 +6,16 @@ class Database:
         self.config = config
         self.logger = Logger()
 
-    def add_link_with_category(self, url, category):
+    def add_link_with_category(self, url, category_name):
         conn = None
         cursor = None
         try:
+            # Eerst category_id ophalen
+            category_id = self.get_category_id_by_name(category_name)
+            if category_id is None:
+                self.logger.log(f"Category '{category_name}' not found, skipping link insertion", log_level=2)
+                return None
+                
             conn = mysql.connector.connect(**self.config)
             cursor = conn.cursor()
             sql = (
@@ -17,7 +23,7 @@ class Database:
                 "VALUES (%s, %s) "
                 "ON DUPLICATE KEY UPDATE category = VALUES(category), id = LAST_INSERT_ID(id)"
             )
-            cursor.execute(sql, (url, category))
+            cursor.execute(sql, (url, category_id))
             conn.commit()
             return cursor.lastrowid
         except Exception as e:
@@ -77,6 +83,29 @@ class Database:
             except Exception:
                 pass
 
+    def get_category_id_by_name(self, category_name):
+        conn = None
+        cursor = None
+        try:
+            conn = mysql.connector.connect(**self.config)
+            cursor = conn.cursor()
+            sql = "SELECT id FROM categories WHERE category_name = %s"
+            cursor.execute(sql, (category_name,))
+            result = cursor.fetchone()
+            return result[0] if result else None
+        except Exception as e:
+            self.logger.log(f"DB error in get_category_id_by_name: {e}", log_level=3)
+            return None
+        finally:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+            try:
+                conn.close()
+            except Exception:
+                pass
+
     def add_category(self, category):
         conn = None
         cursor = None
@@ -119,14 +148,20 @@ class Database:
             except Exception:
                 pass
 
-    def save_email(self, email, category):
+    def save_email(self, email, category_name):
         conn = None
         cursor = None
         try:
+            # Eerst category_id ophalen
+            category_id = self.get_category_id_by_name(category_name)
+            if category_id is None:
+                self.logger.log(f"Category '{category_name}' not found, skipping email insertion", log_level=2)
+                return
+                
             conn = mysql.connector.connect(**self.config)
             cursor = conn.cursor()
-            sql = "INSERT INTO url_email_address (email_address, category) VALUES (%s, %s)"
-            cursor.execute(sql, (email, category))
+            sql = "INSERT INTO url_email (email, category) VALUES (%s, %s) ON DUPLICATE KEY UPDATE category = VALUES(category)"
+            cursor.execute(sql, (email, category_id))
             conn.commit()
         except Exception as e:
             self.logger.log(f"DB error in save_email: {e}", log_level=3)
